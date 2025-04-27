@@ -12,11 +12,15 @@ from langchain_groq import ChatGroq
 from dotenv import load_dotenv
 import os
 
-# Load environment variables from the .env file
+# Load environment variables
 load_dotenv()
 
-# Fetch the API key from the .env file
-groq_api_key = os.getenv('GROQ_API_KEY')
+# Load GROQ API Key smartly
+groq_api_key = st.secrets.get("GROQ_API_KEY") or os.getenv("GROQ_API_KEY")
+
+if not groq_api_key:
+    st.error("❌ GROQ_API_KEY not found! Please set it in Streamlit Secrets or .env file.")
+    st.stop()
 
 def main():
     # Sidebar: Customization Options
